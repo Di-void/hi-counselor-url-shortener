@@ -18,6 +18,7 @@ const Db = () => {
 };
 
 const insert = async (url, short_url) => {
+  // Didn't promisify because this function is quite trivial at runtime
   const cnx = Db();
   cnx.query(
     "INSERT INTO `url_maps` (url, short_url) VALUES (?,?)",
