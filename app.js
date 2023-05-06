@@ -38,7 +38,7 @@ app.get("/:shortUrl", (req, res) => {
   getUrl(shortUrl)
     .then((originalUrl) => {
       if (!originalUrl) {
-        res.send("URL not found");
+        return res.send("URL not found");
       }
 
       return res.redirect(originalUrl);
