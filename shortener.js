@@ -19,10 +19,11 @@ const shorten = async (url) => {
   return shortUrl;
 };
 
-const getUrl = () => {
-  // console.log("shortener js", shortUrl);
-  const db = getUrlFromDB();
-  return db;
+const getUrl = async (shortUrl) => {
+  const result = await getUrlFromDB(shortUrl).catch((error) => {
+    console.log(error);
+  });
+  return result;
 };
 
 module.exports = { shorten, getUrl };

@@ -33,9 +33,30 @@ const insert = async (url, short_url) => {
   cnx.end();
 };
 
-const getUrlFromDB = function () {
+const getUrlFromDB = function (short_url) {
   const cnx = Db();
-  return cnx;
+  return new Promise((resolve, reject) => {
+    cnx.query(
+      "SELECT `url` FROM `url_maps` WHERE `short_url` = ?",
+      [short_url],
+      function (error, results) {
+        if (error) {
+          console.error("There was an error", error);
+          reject(error);
+        }
+
+        if (results.length > 0) {
+          console.log("Successful Query!!");
+          const firstFound = results[0];
+          const { url } = firstFound;
+          // console.log(url);
+          resolve(url);
+        }
+
+        resolve(null);
+      }
+    );
+  });
 };
 
 module.exports = { insert, getUrlFromDB };

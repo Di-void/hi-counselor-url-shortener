@@ -35,26 +35,17 @@ app.get("/:shortUrl", (req, res) => {
     return res.send("Your Params may be empty");
   }
 
-  const db = getUrl();
-  db.query(
-    "SELECT `url` FROM `url_maps` WHERE `short_url` = ?",
-    [shortUrl],
-    function (error, results) {
-      if (error) {
-        console.error("There was an error", error);
+  getUrl(shortUrl)
+    .then((originalUrl) => {
+      if (!originalUrl) {
+        res.send("URL not found");
       }
 
-      if (results.length > 0) {
-        console.log("Successful Query!!");
-        const firstFound = results[0];
-        const { url } = firstFound;
-        console.log(url);
-        res.redirect(url);
-      }
-
-      res.send("URL not found");
-    }
-  );
+      return res.redirect(originalUrl);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 app.listen(5000, () => {
